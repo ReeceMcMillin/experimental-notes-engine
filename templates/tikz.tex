@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usetikzlibrary{automata, positioning, arrows}
+\thispagestyle{empty}
+
+\tikzset{
+    ->, % makes the edges directed
+    >=stealth', % makes the arrow heads bold
+    node distance=3cm, % specifies the minimum distance between two nodes. Change if necessary.
+    every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+    initial text=$ $, % sets the text that appears on the start arrow
+    }
+
+\begin{document}
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+
+        {{ code }}
+        
+        \end{tikzpicture}
+    \end{figure}
+\end{document}

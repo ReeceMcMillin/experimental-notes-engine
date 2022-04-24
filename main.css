@@ -1,0 +1,68 @@
+@import url(https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/base16/atelier-dune-light.min.css);
+
+figure.tikz-diagram {
+    display: flex;
+    flex-flow: column;
+    padding: 5px;
+    margin: 2rem auto;
+}
+
+figure.tikz-diagram>svg {
+    width: 100%;
+    margin: 0.5rem auto;
+    height: auto;
+}
+
+figcaption {
+    font-family: monospace;
+    text-align: right;
+}
+
+.definition {
+    position: absolute;
+    background: #f9f9f9;
+    font-family: monospace;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid rgb(20, 30, 43);
+    border-radius: 10px;
+}
+
+.highlight {
+    background: #ffc773;
+}
+
+.reference {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-style: dashed;
+    color: rgb(100, 100, 250)
+}
+
+a {
+    text-decoration: underline;
+}
+
+pre {
+    background: none;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+code.hljs {
+    padding-top: 0rem !important;
+    background: none;
+}
+
+legend {
+    margin: 0;
+    font-variant: small-caps;
+}
+
+fieldset {
+    font-weight: 300;
+}
+
+p {
+    margin-bottom: 1rem;
+}
