@@ -14,7 +14,8 @@ fn delimited_by(s: &str, start: &str, end: &str) -> Option<String> {
 }
 
 fn escape_html(s: &str) -> String {
-    s.replace('<', "&lt;")
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
         .replace('>', "&gt;")
         .replace('\"', "&quot;")
         .replace('\'', "&#39;")
@@ -54,7 +55,8 @@ fn main() {
                                 } else {
 
                                     let code_block = format!(
-                                        r#"<fieldset><legend>{title}</legend><pre><code class='language-{prefix}' data-language='{prefix}'>{code}</code></pre></fieldset>"#,
+                                        r#"<fieldset><legend>{title}</legend><pre><code class='language-{prefix}' data-language='{prefix}'>{}</code></pre></fieldset>"#,
+                                        escape_html(code)
                                     );
                                     defs.insert(id, code_block.clone());
                                     return Event::Html(CowStr::from(code_block))
@@ -69,7 +71,8 @@ fn main() {
                                 let definition = capture.name("definition").unwrap().as_str();
                                 defs.insert(term.to_string(), definition.to_string());
                                 let html_str = format!(
-                                    r#"<span class="reference" data-definition="{definition}">{term}</span>"#
+                                    r#"<span class="reference" data-definition="{}">{term}</span>"#,
+                                    escape_html(definition),
                                 );
                                 let original = capture.get(0).unwrap().as_str();
                                 replaced = replaced.replace(original, &html_str);

@@ -10,7 +10,8 @@ fn delimited_by(s: &str, start: &str, end: &str) -> Option<String> {
 }
 
 fn escape_html(s: &str) -> String {
-    s.replace('<', "&lt;")
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
         .replace('>', "&gt;")
         .replace('\"', "&quot;")
         .replace('\'', "&#39;")
