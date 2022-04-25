@@ -1,4 +1,4 @@
-use md::{render_post, render_tikz};
+use md::{render_post, render_tikz, warn_reference_error};
 use pulldown_cmark::CodeBlockKind::Fenced;
 use pulldown_cmark::CowStr::Borrowed;
 use pulldown_cmark::Tag::CodeBlock;
@@ -6,6 +6,7 @@ use pulldown_cmark::{html, CowStr, Event, Parser};
 use regex::Regex;
 use std::collections::HashMap;
 use std::io::Write;
+
 
 fn delimited_by(s: &str, start: &str, end: &str) -> Option<String> {
     let start_pos = s.find(start)?;
@@ -32,8 +33,9 @@ fn main() {
     let event_vec: Vec<Event> = Parser::new(&input).collect();
 
     let parser = Parser::new(&input)
+        .into_offset_iter()
         .enumerate()
-        .map(|(i, event)| match (i, &event) {
+        .map(|(i, (event, span))| match (i, &event) {
             (i, Event::Text(ref inner)) => {
                 if let Some(previous_event) = event_vec.get(i - 1) {
                     match previous_event {
@@ -87,7 +89,7 @@ fn main() {
                                     );
                                     replaced = replaced.replace(&format!("@ref{{{term}}}"), &html_str);
                                 } else {
-                                    eprintln!("Reference to undefined item: {term}");
+                                    warn_reference_error(&input, term, &span);
                                     replaced = replaced.replace(&format!("@ref{{{term}}}"), &format!("<font color=\"red\">@ref{{{term}}}</font>"));
                                 }
                             }

@@ -1,5 +1,9 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/base16/atelier-dune-light.min.css);
 
+main {
+    line-height: 1.75;
+}
+
 figure.tikz-diagram {
     display: flex;
     flex-flow: column;

@@ -1,5 +1,6 @@
+use colored::Colorize;
 use askama::Template;
-use std::{io::Write, process::Command};
+use std::{io::Write, process::Command, ops::Range};
 
 #[derive(Template)]
 #[template(path = "tikz.tex", escape = "none")]
@@ -59,4 +60,36 @@ struct PostTemplate<'a> {
 pub fn render_post(content: &str) -> String {
     let f = PostTemplate { content };
     f.render().unwrap()
+}
+
+
+pub fn warn_reference_error(input: &str, term: &str, span: &Range<usize>) {
+    eprintln!("{}: undefined item: `{term}`", "warning".yellow().bold());
+
+    let event_ctx = input[span.start..span.end].to_string();
+    let idx = span.start + event_ctx.find(term).unwrap();
+    let line = input[..idx].chars().filter(|&x| x == '\n').count() + 1;
+    let term_range = (idx, idx + term.len());
+    let leading_context = &input[term_range.0 - 40..term_range.0 - 5];
+    let context = &input[term_range.0 - 5..term_range.1 + 1];
+    let trailing_context = &input[term_range.1 + 1..term_range.1 + 40]
+        .split('\n')
+        .next()
+        .unwrap();
+
+    eprintln!("       {}", "|".cyan().bold());
+    eprintln!(
+        " {:^5} {} {}{}\x1b[0m{}",
+        line.to_string().cyan().bold(),
+        "|".cyan().bold(),
+        leading_context,
+        context.bold().yellow(),
+        trailing_context
+    );
+    eprintln!(
+        "       {} {}{}",
+        "|".cyan().bold(),
+        " ".repeat(leading_context.len()),
+        "^".repeat(context.len()).bold().yellow()
+    );
 }
